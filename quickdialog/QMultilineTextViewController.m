@@ -55,6 +55,9 @@
     [super viewDidLoad];
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeNone;
+
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneTapped)];
+    self.navigationItem.rightBarButtonItem = doneButton;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -70,6 +73,11 @@
         _willDisappearCallback();
     }
     [super viewWillDisappear:animated];
+}
+
+- (void)doneTapped
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
