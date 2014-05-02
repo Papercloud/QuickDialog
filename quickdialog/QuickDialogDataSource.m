@@ -58,6 +58,18 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     QSortingSection *section = ((QSortingSection *) [_tableView.root getVisibleSectionForIndex: indexPath.section]);
+
+    QElement *element;
+    if (section.elements.count >= indexPath.row) {
+        element = section.elements[indexPath.row];
+    }
+
+    if ([element.controller respondsToSelector:@selector(shouldDeleteElement:)]) {
+        if (![(QuickDialogController *)element.controller shouldDeleteElement:element]) {
+            return;
+        };
+    }
+
     if ([section removeElementForRow:indexPath.row]){
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
