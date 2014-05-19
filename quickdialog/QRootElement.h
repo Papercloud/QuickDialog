@@ -75,9 +75,9 @@ typedef enum  {
 
 - (QRootElement *)rootWithKey:(NSString *)string;
 
-- (QEntryElement *)findElementToFocusOnBefore:(QElement *)previous;
+- (QElement *)findElementToFocusOnBefore:(QElement *)previous;
 
-- (QEntryElement *)findElementToFocusOnAfter:(QElement *)element;
+- (QElement *)findElementToFocusOnAfter:(QElement *)element;
 
 - (void)handleEditingChanged;
 

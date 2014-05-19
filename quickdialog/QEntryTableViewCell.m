@@ -252,7 +252,7 @@
 
 - (void)handleActionBarPreviousNext:(UISegmentedControl *)control {
 
-	QEntryElement *element;
+    QElement *element;
 
     const BOOL isNext = control.selectedSegmentIndex == 1;
     if (isNext) {
@@ -261,29 +261,27 @@
 		element = [_entryElement.parentSection.rootElement findElementToFocusOnBefore:_entryElement];
 	}
 
-	if (element != nil) {
+    if (element != nil)
+    {
+        if (![element isKindOfClass:[QEntryElement class]])
+            [self endEditing:YES];
 
-        UITableViewCell *cell = [_quickformTableView cellForElement:element];
-		if (cell != nil) {
-			[cell becomeFirstResponder];
-		}
-        else {
+        NSIndexPath *indexPath = [element getIndexPath];
 
-            [_quickformTableView scrollToRowAtIndexPath:[element getIndexPath]
-                                       atScrollPosition:UITableViewScrollPositionMiddle
-                                               animated:YES];
+        [_quickformTableView.delegate tableView:_quickformTableView willSelectRowAtIndexPath:indexPath];
 
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC);
-            dispatch_after(popTime, dispatch_get_main_queue(), ^{
-                UITableViewCell *c = [_quickformTableView cellForElement:element];
-                if (c != nil) {
-                    [c becomeFirstResponder];
-                }
-            });
-        }
-	}
-    
-    if (_entryElement.keepSelected) {
+        // Calling this method does not cause the delegate to receive a tableView:willSelectRowAtIndexPath:
+        // or tableView:didSelectRowAtIndexPath: message, nor will it send UITableViewSelectionDidChangeNotification
+        // notifications to observers.
+        [_quickformTableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+
+        [_quickformTableView.delegate tableView:_quickformTableView didSelectRowAtIndexPath:indexPath];
+
+        // Passing UITableViewScrollPositionNone will result in no scrolling, rather than the minimum scrolling described for that constant.
+        [_quickformTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+    }
+
+    if (!_entryElement.keepSelected) {
         [_quickformTableView deselectRowAtIndexPath:[_entryElement getIndexPath] animated:YES];
     }
 

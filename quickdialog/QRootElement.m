@@ -197,23 +197,23 @@
 }
 
 
-- (QEntryElement *)findElementToFocusOnBefore:(QElement *)previous {
+- (QElement *)findElementToFocusOnBefore:(QElement *)previous {
 
-    QEntryElement *previousElement = nil;
+    QElement *previousElement = nil;
     for (QSection *section in self.sections) {
         for (QElement *e in section.elements) {
             if (e == previous) {
                 return previousElement;
             }
-            else if ([e isKindOfClass:[QEntryElement class]] && [(QEntryElement *)e canTakeFocus]) {
-                previousElement = (QEntryElement *)e;
+            else if ([e canTakeFocus]) {
+                previousElement = e;
             }
         }
     }
     return nil;
 }
 
-- (QEntryElement *)findElementToFocusOnAfter:(QElement *)element {
+- (QElement *)findElementToFocusOnAfter:(QElement *)element {
 
     BOOL foundSelf = element == nil;
     for (QSection *section in self.sections) {
@@ -221,8 +221,8 @@
             if (e == element) {
                 foundSelf = YES;
             }
-            else if (foundSelf && [e isKindOfClass:[QEntryElement class]] && [(QEntryElement *)e canTakeFocus]) {
-                return (QEntryElement *) e;
+            else if (foundSelf && [e canTakeFocus]) {
+                return e;
             }
         }
     }
