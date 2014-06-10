@@ -65,7 +65,7 @@
 
 - (NSDate *)dateValue
 {
-    if (self.mode == UIDatePickerModeDate)   {
+    if (self.mode == UIDatePickerModeDate && _dateValue)   {
         NSCalendar *gregorian = [[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
         NSDateComponents *dateComponents = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:_dateValue];
         _dateValue = [gregorian dateFromComponents:dateComponents];
