@@ -41,7 +41,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.detailTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
     cell.detailTextLabel.numberOfLines = 0;
-
+    cell.backgroundColor = self.enabled ? self.appearance.backgroundColorEnabled : self.appearance.backgroundColorDisabled;
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
     cell.textLabel.text = self.title;
     cell.detailTextLabel.font = self.appearance.valueFont;
